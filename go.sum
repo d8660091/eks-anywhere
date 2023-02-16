@@ -2243,6 +2243,8 @@ sigs.k8s.io/cluster-api-provider-vsphere v1.0.1 h1:qs7zSFkAL9tU8tHob7bmrEWfKsOU5
 sigs.k8s.io/cluster-api-provider-vsphere v1.0.1/go.mod h1:Z6MDQcZjX5DUcEFStotBptj2fMR4vgCVPAnw6inIY20=
 sigs.k8s.io/cluster-api/test v1.0.0 h1:PeWOLXtDGYMmzXwGX+NtH7Xxx6BtS83DT7vKzITY5X0=
 sigs.k8s.io/cluster-api/test v1.0.0/go.mod h1:8WQozDv62x2qHkCB1wTUeFjuwawuHKUTh8IMH5hePQs=
+sigs.k8s.io/cluster-api/test v1.3.3 h1:AzX6zWneNOv3umK9PnhON5kjt2MJaw0jvFl39ReWL28=
+sigs.k8s.io/cluster-api/test v1.3.3/go.mod h1:HKkh1O4lALo51GsXVIJ1rQNyLRE+CbEVcA+f/1gU5Rw=
 sigs.k8s.io/controller-runtime v0.5.0/go.mod h1:REiJzC7Y00U+2YkMbT8wxgrsX5USpXKGhb2sCtAXiT8=
 sigs.k8s.io/controller-runtime v0.10.2/go.mod h1:CQp8eyUQZ/Q7PJvnIrB6/hgfTC1kBkGylwsLgOQi1WY=
 sigs.k8s.io/controller-runtime v0.11.1/go.mod h1:KKwLiTooNGu+JmLZGn9Sl3Gjmfj66eMbCQznLP5zcqA=

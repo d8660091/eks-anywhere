@@ -1,0 +1,19 @@
+go 1.20
+
+use (
+	./
+	./hack/tools
+	./internal/aws-sdk-go-v2/internal/configsources
+	./internal/aws-sdk-go-v2/internal/configsources/configtesting
+	./internal/aws-sdk-go-v2/internal/endpoints/v2
+	./internal/aws-sdk-go-v2/service/snowballdevice
+	./release
+	./test/e2e/tools/eks-anywhere-test-tool
+)
+
+replace (
+	github.com/docker/distribution => github.com/docker/distribution v0.0.0-20220207154021-dcf66392d606
+	
+	sigs.k8s.io/cluster-api => github.com/abhay-krishna/cluster-api v1.3.3-eksa.1
+)
+

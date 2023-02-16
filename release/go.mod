@@ -164,7 +164,6 @@ require (
 )
 
 replace (
-	github.com/opencontainers/image-spec => github.com/opencontainers/image-spec v1.0.2
 	github.com/opencontainers/runc => github.com/opencontainers/runc v1.1.2
 	
 	// These 2 are needed because v0.26.0 needs go 1.19 and controller-runtime v0.14
