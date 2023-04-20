@@ -32,8 +32,6 @@ const (
 	snowIPPoolIPEnd      = "T_SNOW_IPPOOL_IPEND"
 	snowIPPoolGateway    = "T_SNOW_IPPOOL_GATEWAY"
 	snowIPPoolSubnet     = "T_SNOW_IPPOOL_SUBNET"
-
-	snowEc2TagPrefix = "sigs.k8s.io/cluster-api-provider-aws-snow/cluster/"
 )
 
 var requiredSnowEnvVars = []string{
@@ -124,7 +122,7 @@ func (s *Snow) CleanupVMs(clusterName string) error {
 		var ownedInstanceIds []*string
 		for _, reservation := range out.Reservations {
 			for _, instance := range reservation.Instances {
-				if isNotTerminatedAndHasTag(instance, snowEc2TagPrefix+clusterName) {
+				if isNotTerminatedAndHasTag(instance, clusterName) {
 					ownedInstanceIds = append(ownedInstanceIds, instance.InstanceId)
 				}
 			}
@@ -136,7 +134,10 @@ func (s *Snow) CleanupVMs(clusterName string) error {
 			}); err != nil {
 				res = append(res, fmt.Errorf("Cannot terminate ec2 instances from snow device: %w", err))
 			} else {
-				s.t.Logf("Cluster %s EC2 instances have been cleaned from device %s: %+v", clusterName, ip, ownedInstanceIds)
+				s.t.Logf("Cluster %s EC2 instances have been cleaned from device %s:", clusterName, ip)
+				for _, ownedInstanceID := range ownedInstanceIds {
+					s.t.Logf("%s", *ownedInstanceID)
+				}
 			}
 		} else {
 			s.t.Logf("No EC2 instances to cleanup for snow device: %s", ip)
@@ -146,7 +147,10 @@ func (s *Snow) CleanupVMs(clusterName string) error {
 		if err != nil {
 			res = append(res, err)
 		} else {
-			s.t.Logf("KeyPairs has been cleaned: %+v", cleanedKeys)
+			s.t.Logf("KeyPairs has been cleaned:")
+			for _, cleanedKey := range cleanedKeys {
+				s.t.Logf("%s", *cleanedKey)
+			}
 		}
 
 	}
@@ -178,13 +182,16 @@ func cleanupKeypairs(ec2Client *ec2.EC2, clusterName string) ([]*string, error) 
 	return keyPairNames, kerrors.NewAggregate(errs)
 }
 
-func isNotTerminatedAndHasTag(instance *ec2.Instance, tag string) bool {
+func isNotTerminatedAndHasTag(instance *ec2.Instance, clusterName string) bool {
 	if *instance.State.Name == "terminated" {
 		return false
 	}
 
 	for _, t := range instance.Tags {
-		if *t.Key == tag {
+		if strings.Contains(*t.Key, clusterName) {
+			return true
+		}
+		if strings.Contains(*t.Value, clusterName) {
 			return true
 		}
 	}

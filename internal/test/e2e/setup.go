@@ -45,6 +45,7 @@ type E2ESession struct {
 	branchName          string
 	hardware            []*api.Hardware
 	logger              logr.Logger
+	cleanups            []func() // cleanup when one admin instance finished running all assigned e2e tests
 }
 
 func newE2ESession(instanceId string, conf instanceRunConf) (*E2ESession, error) {

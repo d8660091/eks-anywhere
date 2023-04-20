@@ -98,6 +98,10 @@ func RunTestsInParallel(conf ParallelRunConf) error {
 				r.err = err
 			}
 
+			if !r.testCommandResult.Successful() {
+				conf.Logger.Info("Admin instance finished", "instanceId", r.conf.instanceId, "commandId", r.testCommandResult.CommandId, "tests", r.conf.regex, "successful", r.testCommandResult.Successful())
+			}
+
 			results = append(results, r)
 			<-queue
 		}(instanceConf)
@@ -193,6 +197,10 @@ func RunTests(conf instanceRunConf) (testInstanceID string, testCommandResult *t
 
 	if err = conf.runPostTestsProcessing(session, testCommandResult); err != nil {
 		return session.instanceId, nil, err
+	}
+
+	for _, cleanUp := range session.cleanups {
+		cleanUp()
 	}
 
 	// Tagging only successful e2e test instances.

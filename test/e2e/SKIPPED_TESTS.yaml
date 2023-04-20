@@ -18,16 +18,17 @@ skipped_tests:
 # - TestSnowKubernetes124SimpleFlow
 # - TestSnowKubernetes125SimpleFlow
 # - TestSnowKubernetes126SimpleFlow
-- TestSnowKubernetes123UbuntuTo124Upgrade
-- TestSnowKubernetes124UbuntuTo125Upgrade
-- TestSnowKubernetes125UbuntuTo126Upgrade
-- TestSnowKubernetes126UbuntuTo127Upgrade
+# - TestSnowKubernetes127SimpleFlow
+# - TestSnowKubernetes123UbuntuTo124Upgrade
+# - TestSnowKubernetes124UbuntuTo125Upgrade
+# - TestSnowKubernetes125UbuntuTo126Upgrade
+# - TestSnowKubernetes126UbuntuTo127Upgrade
 - TestSnowKubernetes123BottlerocketTo124Upgrade
 - TestSnowKubernetes124BottlerocketTo125Upgrade
 - TestSnowKubernetes125BottlerocketTo126Upgrade
 - TestSnowKubernetes126BottlerocketTo127Upgrade
-- TestSnowKubernetes123To124BottlerocketStaticIPUpgrade
-- TestSnowKubernetes124To125BottlerocketStaticIPUpgrade
+# - TestSnowKubernetes123To124BottlerocketStaticIPUpgrade
+# - TestSnowKubernetes124To125BottlerocketStaticIPUpgrade
 - TestSnowKubernetes125To126BottlerocketStaticIPUpgrade
 - TestSnowKubernetes126To127BottlerocketStaticIPUpgrade
 - TestSnowMulticlusterWorkloadClusterAPI
