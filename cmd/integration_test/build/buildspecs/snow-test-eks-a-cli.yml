@@ -2,11 +2,12 @@ version: 0.2
 
 env:
   variables:
-    INTEGRATION_TEST_MAX_EC2_COUNT: 3
+    INTEGRATION_TEST_MAX_EC2_COUNT: 180
     INTEGRATION_TEST_MAX_CONCURRENT_TEST_COUNT: 3
     EKSA_GIT_KNOWN_HOSTS: "/tmp/known_hosts"
     EKSA_GIT_PRIVATE_KEY: "/tmp/private-key"
     INTEGRATION_TEST_INFRA_CONFIG: "/tmp/test-infra.yml"
+    T_SNOW_DEVICES: "10.80.26.37"
   secrets-manager:
     EKSA_AWS_ACCESS_KEY_ID: "packages_ci_beta:aws_access_key_id"
     EKSA_AWS_SECRET_ACCESS_KEY: "packages_ci_beta:aws_secret_access_key_id"
@@ -21,7 +22,6 @@ env:
     T_REGISTRY_MIRROR_PASSWORD: "harbor-registry-data:password"
     T_REGISTRY_MIRROR_CA_CERT: "harbor-registry-data:caCert"
     T_AWS_IAM_ROLE_ARN: "aws-iam-auth-role:ec2_role_arn"
-    T_SNOW_DEVICES: "snow_ci:snow_devices"
     T_SNOW_CREDENTIALS_S3_PATH: "snow_ci:snow_credentials_s3_path"
     T_SNOW_CERTIFICATES_S3_PATH: "snow_ci:snow_certificates_s3_path"
     T_SNOW_CONTROL_PLANE_CIDRS: "snow_ci:control_plane_cidrs"
@@ -31,6 +31,9 @@ phases:
       - source ${CODEBUILD_SRC_DIR}/cmd/integration_test/build/script/setup_profile.sh
       - source ${CODEBUILD_SRC_DIR}/cmd/integration_test/build/script/create_infra_config.sh
       - ${CODEBUILD_SRC_DIR}/cmd/integration_test/build/script/start_docker.sh
+      - make build-integration-test-binary
+      - make build-eks-a-for-e2e
+      - make e2e-tests-binary E2E_TAGS="e2e snow" E2E_OUTPUT_FILE=bin/snow/e2e.test
   build:
     commands:
       - export JOB_ID=$CODEBUILD_BUILD_ID

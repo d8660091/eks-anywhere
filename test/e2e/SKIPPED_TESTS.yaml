@@ -48,10 +48,10 @@ skipped_tests:
 # - TestSnowKubernetes124SimpleFlow
 # - TestSnowKubernetes125SimpleFlow
 # - TestSnowKubernetes126SimpleFlow
-- TestSnowKubernetes127UbuntuTo128Upgrade
-- TestSnowKubernetes124UbuntuTo125Upgrade
-- TestSnowKubernetes125UbuntuTo126Upgrade
-- TestSnowKubernetes126UbuntuTo127Upgrade
+# - TestSnowKubernetes127UbuntuTo128Upgrade
+# - TestSnowKubernetes124UbuntuTo125Upgrade
+# - TestSnowKubernetes125UbuntuTo126Upgrade
+# - TestSnowKubernetes126UbuntuTo127Upgrade
 - TestSnowKubernetes127BottlerocketTo128Upgrade
 - TestSnowKubernetes124BottlerocketTo125Upgrade
 - TestSnowKubernetes125BottlerocketTo126Upgrade
