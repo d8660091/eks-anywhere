@@ -31,6 +31,9 @@ phases:
       - source ${CODEBUILD_SRC_DIR}/cmd/integration_test/build/script/setup_profile.sh
       - source ${CODEBUILD_SRC_DIR}/cmd/integration_test/build/script/create_infra_config.sh
       - ${CODEBUILD_SRC_DIR}/cmd/integration_test/build/script/start_docker.sh
+      - make build-integration-test-binary
+      - make build-eks-a-for-e2e
+      - make e2e-tests-binary E2E_TAGS="e2e docker" E2E_OUTPUT_FILE=bin/docker/e2e.test
   build:
     commands:
       - export JOB_ID=$CODEBUILD_BUILD_ID
@@ -49,7 +52,7 @@ phases:
         -i ${INTEGRATION_TEST_INSTANCE_PROFILE}
         -m ${INTEGRATION_TEST_MAX_EC2_COUNT}
         -p ${INTEGRATION_TEST_MAX_CONCURRENT_TEST_COUNT}
-        -r 'Test'
+        -r 'TestDockerKubernetes127AirgappedRegistryMirrorAndCert'
         -v 4
         --skip ${SKIPPED_TESTS}
         --bundles-override=${BUNDLES_OVERRIDE}

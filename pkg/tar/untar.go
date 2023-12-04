@@ -23,6 +23,7 @@ func Untar(source io.Reader, router Router) error {
 
 	for {
 		header, err := tarReader.Next()
+		fmt.Printf("tarReader.next Debug: %+v\n", header)
 		if err == io.EOF {
 			break
 		} else if err != nil {
@@ -48,16 +49,19 @@ func Untar(source io.Reader, router Router) error {
 			continue
 		}
 
+		fmt.Printf("Untar Debug: opening file %s\n", path)
 		file, err := os.OpenFile(path, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, info.Mode())
 		if err != nil {
 			return err
 		}
-		defer file.Close()
 
-		_, err = io.Copy(file, tarReader)
-		if err != nil {
+		fmt.Printf("Untar Debug: copying file %v\n", file)
+		if _, err = io.Copy(file, tarReader); err != nil {
+			// In Go, "defer" will be executed when the function returns, not at the end of the loop. File descriptor limits could be reached if we don't close the file here.
+			file.Close()
 			return err
 		}
+		file.Close()
 	}
 	return nil
 }

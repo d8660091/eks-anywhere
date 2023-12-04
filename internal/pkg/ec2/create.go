@@ -54,7 +54,7 @@ func CreateInstance(session *session.Session, amiId, key, tag, instanceProfileNa
 				{
 					DeviceName: aws.String("/dev/xvda"),
 					Ebs: &ec2.EbsBlockDevice{
-						VolumeSize: aws.Int64(100),
+						VolumeSize: aws.Int64(150),
 					},
 				},
 			},

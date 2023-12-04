@@ -587,7 +587,7 @@ func TestDockerKubernetes127AirgappedRegistryMirrorAndCert(t *testing.T) {
 		framework.WithClusterFiller(api.WithKubernetesVersion(v1alpha1.Kube127)),
 		framework.WithRegistryMirrorEndpointAndCert(constants.DockerProviderName),
 	)
-	runDockerAirgapConfigFlow(test)
+	runDockerAirgapConfigFlow(test, "196.18.0.0/16")
 }
 
 func TestDockerKubernetes127RegistryMirrorInsecureSkipVerify(t *testing.T) {

@@ -684,7 +684,7 @@ func (e *ClusterE2ETest) ImportImages(opts ...CommandOpt) {
 	} else {
 		bundleManifestLocation = defaultBundleReleaseManifestFile
 	}
-	importImagesArgs := []string{"import images", "--input", defaultDownloadImagesOutputLocation, "--bundles", bundleManifestLocation, "--registry", registryMirrorHost, "--insecure"}
+	importImagesArgs := []string{"import images", "--input", defaultDownloadImagesOutputLocation, "--bundles", bundleManifestLocation, "--registry", registryMirrorHost, "--insecure", "-v", "99"}
 	e.RunEKSA(importImagesArgs, opts...)
 }
 
