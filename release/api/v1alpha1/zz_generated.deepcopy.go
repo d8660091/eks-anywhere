@@ -1014,7 +1014,11 @@ func (in *VersionsBundle) DeepCopyInto(out *VersionsBundle) {
 	in.Haproxy.DeepCopyInto(&out.Haproxy)
 	in.Snow.DeepCopyInto(&out.Snow)
 	in.Nutanix.DeepCopyInto(&out.Nutanix)
-	in.Upgrader.DeepCopyInto(&out.Upgrader)
+	if in.Upgrader != nil {
+		in, out := &in.Upgrader, &out.Upgrader
+		*out = new(UpgraderBundle)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Aws != nil {
 		in, out := &in.Aws, &out.Aws
 		*out = new(AwsBundle)

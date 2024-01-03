@@ -6,6 +6,7 @@ package e2e
 
 import (
 	"context"
+	"os"
 	"testing"
 	"time"
 
@@ -1332,5 +1333,21 @@ func TestDockerKubernetesRegionalCuratedPackages(t *testing.T) {
 		if pbc.Spec.DefaultImageRegistry != pbc.Spec.DefaultRegistry {
 			e.T.Fatal("in regional pbc, DefaultImageRegistry should equal to DefaultRegistry")
 		}
+	})
+}
+
+func TestDockerKubernetes128UpgradeManagementComponents(t *testing.T) {
+	test := framework.NewClusterE2ETest(t,
+		framework.NewDocker(t),
+		framework.WithClusterFiller(api.WithKubernetesVersion(v1alpha1.Kube128)),
+	)
+
+	test.DownloadLatestReleasedManifestFile()
+	os.Setenv(framework.BundlesOverrideVar, "true")
+
+	test.WithCluster(func(e *framework.ClusterE2ETest) {
+		test.RunEKSA([]string{"upgrade", "management-components", "-f", e.ClusterConfigLocation, "-v", "99"})
+		// delete cluster command will not have this flag
+		os.Unsetenv(framework.BundlesOverrideVar)
 	})
 }

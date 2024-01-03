@@ -81,7 +81,7 @@ type VersionsBundle struct {
 	Haproxy                    HaproxyBundle                    `json:"haproxy,omitempty"`
 	Snow                       SnowBundle                       `json:"snow,omitempty"`
 	Nutanix                    NutanixBundle                    `json:"nutanix,omitempty"`
-	Upgrader                   UpgraderBundle                   `json:"upgrader,omitempty"`
+	Upgrader                   *UpgraderBundle                  `json:"upgrader,omitempty"`
 	// This field has been deprecated
 	Aws *AwsBundle `json:"aws,omitempty"`
 }

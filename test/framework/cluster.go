@@ -2246,3 +2246,16 @@ func (e *ClusterE2ETest) CreateCloudStackCredentialsSecretFromEnvVar(name, profi
 func (e *ClusterE2ETest) addClusterConfigFillers(fillers ...api.ClusterConfigFiller) {
 	e.clusterConfigFillers = append(e.clusterConfigFillers, fillers...)
 }
+
+// DownloadLatestReleasedManifestFile downloads the latest released manifest file and turns on the bundlesOverride env flag.
+func (e *ClusterE2ETest) DownloadLatestReleasedManifestFile() {
+	e.T.Log("Download Latest Manifest")
+	cmd := exec.Command("sh", "-c", `curl https://anywhere-assets.eks.amazonaws.com/releases/eks-a/manifest.yaml --silent --location | docker run --rm -i mikefarah/yq '.spec.latestVersion as $latestVersion | .spec.releases.[] | select(.version == $latestVersion) | .bundleManifestUrl'`)
+	out, err := cmd.Output()
+	if err != nil {
+		e.T.Fatalf("Failed to get latest manifest url: %s", err)
+	}
+	lastManifestURL := strings.TrimSpace(string(out))
+
+	cmd = e.Run(fmt.Sprintf(`curl %s --silent --location -o %s`, lastManifestURL, defaultBundleReleaseManifestFile))
+}
