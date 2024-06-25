@@ -79,6 +79,10 @@ func (e *E2ESession) setup(regex string) error {
 		return fmt.Errorf("waiting for ssm in new instance: %v", err)
 	}
 
+	if err = e.updateDockerLogConfig(); err != nil {
+		return err
+	}
+
 	err = e.updateFSInotifyResources()
 	if err != nil {
 		return err
@@ -304,4 +308,33 @@ func (e *E2ESession) clusterName(branch, instanceId, testName string) (clusterNa
 		clusterName = clusterName[:63]
 	}
 	return clusterName
+}
+
+func (e *E2ESession) updateDockerLogConfig() error {
+	e.logger.V(1).Info("Updating Docker Config to upload logs to cloudwatch")
+
+	const script = `
+set -x
+yum install -y ec2-utils
+INSTANCE_ID=$(ec2-metadata -i | cut -d ' ' -f 2)
+cat << EOF > /etc/docker/daemon.json 
+{
+    "log-driver": "awslogs",
+    "log-opts": {
+      "awslogs-region": "us-west-2",
+      "awslogs-group": "/e2e/docker-logs/",
+      "tag": "$INSTANCE_ID-{{.Name}}-{{ with split .ImageName \":\" }}{{join . \"_\"}}{{end}}-{{.ID}}",
+      "awslogs-create-group": "true"
+    }
+  }
+EOF
+systemctl restart docker
+`
+	if err := ssm.Run(e.session, logr.Discard(), e.instanceId, script, ssmTimeout); err != nil {
+		e.logger.V(1).Error(err, "Error updating Docker Config")
+		return err
+	}
+
+	e.logger.V(1).Info("Docker config updated")
+	return nil
 }
